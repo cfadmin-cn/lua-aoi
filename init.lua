@@ -97,7 +97,7 @@ local function aoi_move(self, uid, x, y)
   return aoi_xrange(self, obj, x, y)
 end
 
-local function aoi_enter(self, uid, x, y, no_fast)
+local function aoi_enter(self, uid, x, y, fast)
   local obj = self.plist[uid]
   if obj then
     error("[Lua-Aoi Error]: Multiple 'Enter' operations cannot be performed")
@@ -105,7 +105,7 @@ local function aoi_enter(self, uid, x, y, no_fast)
   obj = { uid }
   self.plist[uid] = obj
   aio_set(self, obj, x, y)
-  if not no_fast then
+  if not fast then
     return aoi_xrange(self, obj, x, y)
   end
 end
@@ -120,6 +120,9 @@ function Aoi:ctor(opt)
   self.map    = map_init(self.x, self.y, self.radius)
 end
 
+---comment Get uid info.
+---@param uid any   @UID
+---@return table    @Position{ x = xxx, y = yyy }
 function Aoi:get_uid(uid)
   local obj = self.plist[uid]
   if not obj then
@@ -132,10 +135,10 @@ end
 ---@param uid any      @UID
 ---@param x   integer  @Y Position
 ---@param y   integer  @X Position
-function Aoi:enter(uid, x, y, no_fast)
+function Aoi:enter(uid, x, y, fast)
   assert(uid and x and y, "[Lua-Aoi Error]: Invalid `Enter` arguments.")
   assert((x >= 0 and x <= self.x) and (y >= 0 and y <= self.y), "[Lua-Aoi Error]: Invalid `Enter` X or Y.")
-  return aoi_enter(self, uid, x, y, no_fast)
+  return aoi_enter(self, uid, x, y, fast)
 end
 
 ---comment @Player Move
@@ -144,7 +147,7 @@ end
 ---@param y   integer  @X Position
 function Aoi:move(uid, x, y)
   assert(uid and x and y, "[Lua-Aoi Error]: Invalid `Move` arguments.")
-  assert((x >= 0 and x <= self.x) and (y >= 0 and y <= self.y), "[Lua-Aoi Error]: Invalid `Move` X or Y." .. string.format("%d, %d, %d, %d", x, y, self.plist[uid][x_idx], self.plist[uid][y_idx]))
+  assert((x >= 0 and x <= self.x) and (y >= 0 and y <= self.y), "[Lua-Aoi Error]: Invalid `Move` X or Y.")
   return aoi_move(self, uid, x, y)
 end
 
@@ -159,9 +162,19 @@ end
 ---@param uid any      @UID
 function Aoi:around(uid)
   local obj = self.plist[uid]
-  return aoi_xrange(self, assert(obj, "[Lua-Aoi Error]: Invalid `uid`."), obj[x_idx], obj[y_idx])
+  return aoi_xrange(self, assert(obj, "[Lua-Aoi Error]: Invalid `Around` arguments."), obj[x_idx], obj[y_idx])
 end
 
+---comment @Player Get all units around `X` and `Y` position
+---@param x   integer  @Y Position
+---@param y   integer  @X Position
+function Aoi:aroundx(x, y)
+  assert(x and y, "[Lua-Aoi Error]: Invalid `Aroundx` arguments.")
+  assert((x >= 0 and x <= self.x) and (y >= 0 and y <= self.y), "[Lua-Aoi Error]: Invalid `Aroundx` X or Y.")
+  return aoi_xrange(self, { [x_idx] = x, [y_idx] = y }, x, y)
+end
+
+---comment Dump All.
 function Aoi:dump()
   print("Aoi_list{")
   for _, uinfo in pairs(self.plist) do
