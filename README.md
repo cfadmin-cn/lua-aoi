@@ -10,7 +10,7 @@
   
   导入后必须先使用`Aoi`类来创建一个实例.
 
-### 0. Aoi:new()
+### 0. Aoi new
 
 ```lua
 function Aoi:new({
@@ -85,6 +85,16 @@ function Aoi:around(uid) return { uid1, uid2, uid3 } end
 function Aoi:aroundx(x, y) return { uid1, uid2, uid3 } end
 ```
   返回值为指定`X`与`Y`位置周围需要通知的**单位数组**.
+  
+### 6. Aoi get_uid
+
+```lua
+---comment Get uid position.
+---@param uid any   @UID
+---@return table    @Position{ x = xxx, y = yyy }
+function Aoi:get_uid(uid) return { x = y, y = x } end
+```
+  返回值为指定`uid`的`X`与`Y`值.
 
 ## Test
 
