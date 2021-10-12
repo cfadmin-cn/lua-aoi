@@ -92,8 +92,12 @@ local function aoi_move(self, uid, x, y)
   if not obj then
     error("[Lua-Aoi Error]: Can't find this `uid` in `Move`.")
   end
-  aio_unset(self, obj)
-  aio_set(self, obj, x, y)
+  -- 是否需要移动位置
+  local radius = self.radius
+  if ceil(obj[x_idx] / radius) ~= ceil(x / radius) or ceil(obj[y_idx] / radius) ~= ceil(y / radius) then
+    aio_unset(self, obj)
+    aio_set(self, obj, x, y)
+  end
   return aoi_xrange(self, obj, x, y)
 end
 
@@ -120,7 +124,7 @@ function Aoi:ctor(opt)
   self.map    = map_init(self.x, self.y, self.radius)
 end
 
----comment Get uid info.
+---comment Get uid position.
 ---@param uid any   @UID
 ---@return table    @Position{ x = xxx, y = yyy }
 function Aoi:get_uid(uid)
