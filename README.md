@@ -96,12 +96,12 @@ function Aoi:get_uid(uid) return { x = y, y = x } end
 ```
   返回值为指定`uid`的`X`与`Y`值.
 
-### 7. Aoi count
+### 7. Aoi Count
 
 ```lua
 ---comment Get all units amount.
 ---@return integer
-function Aoi:count()
+function Aoi:Count()
   return self.ucount
 end
 ```
