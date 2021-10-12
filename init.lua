@@ -122,7 +122,7 @@ function Aoi:ctor(opt)
   self.map    = map_init(self.x, self.y, self.radius)
 end
 
----comment Get all units amont.
+---comment Get all units amount.
 ---@return integer
 function Aoi:count()
   return self.ucount
