@@ -124,7 +124,7 @@ end
 
 ---comment Get all units amount.
 ---@return integer
-function Aoi:Count()
+function Aoi:count()
   return self.ucount
 end
 
