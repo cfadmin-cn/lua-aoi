@@ -93,11 +93,8 @@ local function aoi_move(self, uid, x, y)
     error("[Lua-Aoi Error]: Can't find this `uid` in `Move`.")
   end
   -- 是否需要移动位置
-  local radius = self.radius
-  if ceil(obj[x_idx] / radius) ~= ceil(x / radius) or ceil(obj[y_idx] / radius) ~= ceil(y / radius) then
-    aio_unset(self, obj)
-    aio_set(self, obj, x, y)
-  end
+  aio_unset(self, obj)
+  aio_set(self, obj, x, y)
   return aoi_xrange(self, obj, x, y)
 end
 
@@ -118,10 +115,17 @@ local Aoi = class("Aoi")
 
 function Aoi:ctor(opt)
   self.plist  = {}
+  self.ucount = 0
   self.x      = toint(opt.x) or 65535
   self.y      = toint(opt.y) or 65535
   self.radius = toint(opt.radius) or 100
   self.map    = map_init(self.x, self.y, self.radius)
+end
+
+---comment Get all units amont.
+---@return integer
+function Aoi:count()
+  return self.ucount
 end
 
 ---comment Get uid position.
@@ -142,6 +146,7 @@ end
 function Aoi:enter(uid, x, y, fast)
   assert(uid and x and y, "[Lua-Aoi Error]: Invalid `Enter` arguments.")
   assert((x >= 0 and x <= self.x) and (y >= 0 and y <= self.y), "[Lua-Aoi Error]: Invalid `Enter` X or Y.")
+  self.ucount = self.ucount + 1
   return aoi_enter(self, uid, x, y, fast)
 end
 
@@ -159,6 +164,7 @@ end
 ---@param uid any      @UID
 function Aoi:leave(uid)
   assert(uid, "[Lua-Aoi Error]: Invalid `Leave` arguments.")
+  self.ucount = self.ucount - 1
   return aoi_leave(self, uid)
 end
 
