@@ -28,24 +28,19 @@ end
 local function transform_location(self, ox, oy, nx, ny)
   local radius = self.radius
   local max_x, max_y = ceil(self.x / radius), ceil(self.y / radius)
+
   -- Calculate the `X` axis range
   local x1, x2 = ceil(ox / radius), ceil(nx / radius)
-  if x1 <= x2 then
-    x1, x2 = x1 - 1, x2 + 1
-  else
-    x1, x2 = x2 - 1, x1 + 1
-  end
+  x1, x2 = (x1 < x2 and x1 or x2) - 1, (x1 > x2 and x1 or x2) + 1
   -- Check the `X` axis boundary value of the map.
   x1, x2 = x1 < 0 and 0 or x1, x2 > max_x and max_x or x2
+
   -- Calculate the `Y` axis range
   local y1, y2 = ceil(oy / radius), ceil(ny / radius)
-  if y1 <= y2 then
-    y1, y2 = y1 - 1, y2 + 1
-  else
-    y1, y2 = y2 - 1, y1 + 1
-  end
+  y1, y2 = (y1 < y2 and y1 or y2) - 1, (y1 > y2 and y1 or y2) + 1
   -- Check the `Y` axis boundary value of the map.
   y1, y2 = y1 < 0 and 0 or y1, y2 > max_y and max_y or y2
+
   -- return `Y` and `Y` offset
   return x1, x2, y1, y2
 end
