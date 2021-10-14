@@ -101,9 +101,7 @@ function Aoi:get_uid(uid) return { x = y, y = x } end
 ```lua
 ---comment Get all units amount.
 ---@return integer
-function Aoi:count()
-  return self.ucount
-end
+function Aoi:count() return number_of_units end
 ```
   返回值内部单位总数
 
