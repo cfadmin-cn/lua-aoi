@@ -1,6 +1,6 @@
 # lua-aoi
 
-  基于[cfadmin](https://cfadmin.cn)实现的纯Lua版九宫格`Aoi`算法.
+  基于[cfadmin](https://cfadmin.cn)实现的纯`Lua`版九宫格`Aoi`算法.
   
 ## API Introduce
 
