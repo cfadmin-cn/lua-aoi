@@ -56,6 +56,9 @@ local function aio_unset(self, obj)
 end
 
 local function aoi_xrange(self, obj, x, y)
+  if self.ucount < 2 then
+    return {} -- 减少无用的计算
+  end
   local map = self.map
   local uid = obj[uid_idx]
   local xs, xe, ys, ye = transform_location(self, obj[2], obj[3], x, y)
